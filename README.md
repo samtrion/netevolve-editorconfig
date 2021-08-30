@@ -1,0 +1,1 @@
+# netevolve-editorconfig
