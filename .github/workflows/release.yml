@@ -43,7 +43,7 @@ jobs:
         uses: StanleyGoldman/setup-gitversion@v1.0.1
         with:
           # Version range or exact version of GitVersion to use
-          gitversion-version: 5.7.0
+          gitversion-version: x64-5.7.0
           # Whether to run GitVersion
           run-gitversion: true
           # Args to run with GitVersion
