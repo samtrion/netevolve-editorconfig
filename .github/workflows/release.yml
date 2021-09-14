@@ -29,18 +29,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: echo-default-env-variables
-        run: |
-            echo "Home: ${HOME}"
-            echo "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
-            echo "GITHUB_ACTIONS: ${GITHUB_ACTIONS}"
-            echo "GITHUB_ACTOR: ${GITHUB_ACTOR}"
-            echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
-            echo "GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}"
-            echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
-            echo "GITHUB_SHA: ${GITHUB_SHA}"
-            echo "GITHUB_REF: ${GITHUB_REF}"
-
       - name: Setup GitVersion
         uses: GitTools/actions/gitversion/setup@v0.9.10
         with:
@@ -52,38 +40,14 @@ jobs:
         with:
           useConfigFile: true
 
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.0.5
+        with:
+          nuget-api-key: ${{ secrets.NUGET_TOKEN }}
+          nuget-version: latest
 
-      - name: Display GitVersion outputs
-        run: |
-          echo "Major: ${GITVERSION_major}"
-          echo "Minor: ${GITVERSION_minor}"
-          echo "Patch: ${GITVERSION_patch}"
-          echo "PreReleaseTag: ${GITVERSION_preReleaseTag}"
-          echo "PreReleaseTagWithDash: ${GITVERSION_preReleaseTagWithDash}"
-          echo "PreReleaseLabel: ${GITVERSION_preReleaseLabel}"
-          echo "PreReleaseNumber: ${GITVERSION_preReleaseNumber}"
-          echo "WeightedPreReleaseNumber: ${GITVERSION_weightedPreReleaseNumber}"
-          echo "BuildMetaData: ${GITVERSION_buildMetaData}"
-          echo "BuildMetaDataPadded: ${GITVERSION_buildMetaDataPadded}"
-          echo "FullBuildMetaData: ${GITVERSION_fullBuildMetaData}"
-          echo "MajorMinorPatch: ${GITVERSION_majorMinorPatch}"
-          echo "SemVer: ${GITVERSION_semVer}"
-          echo "LegacySemVer: ${GITVERSION_legacySemVer}"
-          echo "LegacySemVerPadded: ${GITVERSION_legacySemVerPadded}"
-          echo "AssemblySemVer: ${GITVERSION_assemblySemVer}"
-          echo "AssemblySemFileVer: ${GITVERSION_assemblySemFileVer}"
-          echo "FullSemVer: ${GITVERSION_fullSemVer}"
-          echo "InformationalVersion: ${GITVERSION_informationalVersion}"
-          echo "BranchName: ${GITVERSION_branchName}"
-          echo "EscapedBranchName: ${GITVERSION_escapedBranchName}"
-          echo "Sha: ${GITVERSION_sha}"
-          echo "ShortSha: ${GITVERSION_shortSha}"
-          echo "NuGetVersionV2: ${GITVERSION_nuGetVersionV2}"
-          echo "NuGetVersion: ${GITVERSION_nuGetVersion}"
-          echo "NuGetPreReleaseTagV2: ${GITVERSION_nuGetPreReleaseTagV2}"
-          echo "NuGetPreReleaseTag: ${GITVERSION_nuGetPreReleaseTag}"
-          echo "VersionSourceSha: ${GITVERSION_versionSourceSha}"
-          echo "CommitsSinceVersionSource: ${GITVERSION_commitsSinceVersionSource}"
-          echo "CommitsSinceVersionSourcePadded: ${GITVERSION_commitsSinceVersionSourcePadded}"
-          echo "UncommittedChanges: ${GITVERSION_uncommittedChanges}"
-          echo "CommitDate: ${GITVERSION_commitDate}"
+      - name: Update Pack Version
+        run: sed -e 's/#.#.#/'${{ steps.gitversion.outputs.fullSemVer }}'/g' -i NetEvolve.EditorConfig.props
+
+      - name: Run NuGet Pack
+        run: nuget pack NetEvolve.EditorConfig.nuspec -Version ${{ steps.gitversion.outputs.fullSemVer }} -NoDefaultExcludes
