@@ -1,0 +1,50 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
+      - name: echo-default-env-variables
+        run: |
+            echo "Home: ${HOME}"
+            echo "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
+            echo "GITHUB_ACTIONS: ${GITHUB_ACTIONS}"
+            echo "GITHUB_ACTOR: ${GITHUB_ACTOR}"
+            echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
+            echo "GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}"
+            echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
+            echo "GITHUB_SHA: ${GITHUB_SHA}"
+            echo "GITHUB_REF: ${GITHUB_REF}"
+      
+      - name: Setup GitVersion
+        # You may pin to the exact commit or the version.
+        # uses: StanleyGoldman/setup-gitversion@a374f5e1b8c33fb6efd03c402cb511f02eafa245
+        uses: StanleyGoldman/setup-gitversion@v1.0.1
+        with:
+          # Version range or exact version of GitVersion to use
+          gitversion-version: 5.7.0
+          # Whether to run GitVersion
+          run-gitversion: true
+          # Args to run with GitVersion
+          run-gitversion-args: .\GitVersion.yml
