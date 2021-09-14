@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <EditorConfigPackageName>NetEvolve.EditorConfig</EditorConfigPackageName>
+    <EditorConfigPackageVersion>#.#.#</EditorConfigPackageVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <EditorConfigLocation Condition=" '$(NuGetPackageRoot)' != '' ">$(NuGetPackageRoot)$(EditorConfigPackageName)\$(EditorConfigPackageVersion)</EditorConfigLocation>
+    <EditorConfigLocation Condition=" '$(EditorConfigLocation)' == '' and '$(SolutionDir)' != '' ">$(SolutionDir)packages\$(EditorConfigPackageName).$(EditorConfigPackageVersion)</EditorConfigLocation>
+    <EditorConfigLocation Condition=" '$(EditorConfigLocation)' == '' ">$([System.IO.Path]::GetDirectoryName($(MSBuildProjectDirectory)))\packages\$(EditorConfigPackageName).$(EditorConfigPackageVersion)</EditorConfigLocation>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
+  </ItemGroup>
+  <Target Name="CopyEditorConfig" BeforeTargets="build">
+     <Copy SourceFiles="$(EditorConfigLocation)\.editorconfig" DestinationFolder="$(MSBuildProjectDirectory)" ContinueOnError="true" />
+  </Target>
+</Project>

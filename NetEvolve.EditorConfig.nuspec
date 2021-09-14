@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NetEvolve.EditorConfig</id>
+    <version>1.0.0</version>
+    <authors>Martin Stühmer</authors>
+    <owners>Martin Stühmer</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/samtrion/netevolve-editorconfig</projectUrl>
+    <description>General EditorConfig package, Contains a complete up-to-date set of rules and regulations with focus on our core competencies</description>
+    <copyright>Copyright @ Martin Stühmer 2021</copyright>
+    <tags>EditorConfig Standards BestPractice</tags>
+    <developmentDependency>true</developmentDependency>
+  </metadata>
+  <files>
+    <file src=".editorconfig" target="" />
+    <file src="NetEvolve.EditorConfig.props" target="build" />
+  </files>
+</package>
