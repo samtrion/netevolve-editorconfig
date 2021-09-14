@@ -51,3 +51,6 @@ jobs:
 
       - name: Run NuGet Pack
         run: nuget pack NetEvolve.EditorConfig.nuspec -Version ${{ steps.gitversion.outputs.fullSemVer }} -NoDefaultExcludes
+
+      - name: Publish NuGet Package
+        run: nuget push *.nupkg -SkipDuplicate -ApiKey ${{ secrets.NUGET_TOKEN }}
