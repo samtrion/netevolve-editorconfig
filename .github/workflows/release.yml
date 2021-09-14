@@ -47,4 +47,4 @@ jobs:
           # Whether to run GitVersion
           run-gitversion: true
           # Args to run with GitVersion
-          run-gitversion-args: .\GitVersion.yml
+          run-gitversion-args: ${GITHUB_WORKSPACE}/GitVersion.yml
