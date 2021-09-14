@@ -42,17 +42,14 @@ jobs:
 
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.0.5
-        if: github.ref == 'refs/heads/main'
         with:
           nuget-api-key: ${{ secrets.NUGET_TOKEN }}
           nuget-version: latest
 
       - name: Update Pack Version
-        if: github.ref == 'refs/heads/main'
         run: sed -e 's/#.#.#/'${{ steps.gitversion.outputs.fullSemVer }}'/g' -i NetEvolve.EditorConfig.props
 
       - name: Run NuGet Pack
-        if: github.ref == 'refs/heads/main'
         run: nuget pack NetEvolve.EditorConfig.nuspec -Version ${{ steps.gitversion.outputs.fullSemVer }} -NoDefaultExcludes
 
       - name: Publish NuGet Package
